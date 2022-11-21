@@ -2,15 +2,12 @@ import bazzy.org.DownloadService;
 import bazzy.org.PhoneStoreItem;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +32,7 @@ public class Main {
 //        FixNamesLength(data);
     }
 
-    public static void JsonMapper (Path path) throws IOException {
+    public static void JsonMapper(Path path) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonFactory jf = new JsonFactory();
         JsonParser jp = jf.createParser(new File(String.valueOf(path)));
@@ -45,7 +42,7 @@ public class Main {
         }
     }
 
-    public static void FixNamesLength (List<String> data) throws IOException {
+    public static void FixNamesLength(List<String> data) throws IOException {
         Map<String, String> pairs = new HashMap<>();
 
         for (String str : data) {
@@ -68,6 +65,7 @@ public class Main {
             }
         }
     }
+
     public static boolean isNumber(String value) {
         for (int i = 0; i < value.length(); i++) {
             if (!Character.isDigit(value.charAt(i))) {
