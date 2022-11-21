@@ -1,9 +1,16 @@
 import bazzy.org.DownloadService;
+import bazzy.org.PhoneStoreItem;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +30,22 @@ public class Main {
         } catch (Exception e) {
             throw new RuntimeException("Error with download file", e);
         }
+        JsonMapper(downloadedFile);
+//        List<String> data = service.readFromFile(downloadedFile);
+//        FixNamesLength(data);
+    }
 
-        List<String> data = service.readFromFile(downloadedFile);
+    public static void JsonMapper (Path path) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonFactory jf = new JsonFactory();
+        JsonParser jp = jf.createParser(new File(String.valueOf(path)));
+        PhoneStoreItem[] phoneStoreItems = objectMapper.readValue(jp, PhoneStoreItem[].class);
+        for (PhoneStoreItem phone : phoneStoreItems) {
+            System.out.println(phone);
+        }
+    }
 
+    public static void FixNamesLength (List<String> data) throws IOException {
         Map<String, String> pairs = new HashMap<>();
 
         for (String str : data) {
@@ -47,9 +67,7 @@ public class Main {
                 writer.write(String.format("%s=%s\n", entry.getKey(), entry.getValue()));
             }
         }
-
     }
-
     public static boolean isNumber(String value) {
         for (int i = 0; i < value.length(); i++) {
             if (!Character.isDigit(value.charAt(i))) {
